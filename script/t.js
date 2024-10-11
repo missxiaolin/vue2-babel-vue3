@@ -6,7 +6,7 @@ const fs = require("fs");
 const globalApiTreeshaking = require("../src/global-api-treeshaking");
 const globalApi = require("../src/global-api");
 
-const apiRules = [require("../src/slots-unification")];
+const apiRules = [require("../src/slots-unification"), require("../src/setup")];
 
 function execRule(fileName) {
   if (!fileName) {
@@ -45,17 +45,18 @@ function execRule(fileName) {
         }),
       ast
     );
-    const outputCode = outAst.root().generate();
-    console.log(outputCode)
+    let outputCode = outAst.root().generate();
+    outputCode = outputCode.replace('<script>', '<script setup>')
+    console.log('outputCode', outputCode)
 
-    const prettierOutPut = prettier.format(outputCode, {
-        trailingComma: 'es5',
-        tabWidth: 2,
-        semi: false,
-        singleQuote: true,
-        printWidth: 80,
-        parser: 'vue',
-    });
+    // const prettierOutPut = prettier.format(outputCode, {
+    //     trailingComma: 'es5',
+    //     tabWidth: 2,
+    //     semi: false,
+    //     singleQuote: true,
+    //     printWidth: 80,
+    //     parser: 'vue',
+    // });
     // console.log(prettierOutPut);
   });
 }

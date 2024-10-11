@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "t": "node ./script/t.js"
+    "t": "node ./script/t.js",
+    "test": "node ./script/test.js"
   },
   "author": "",
   "license": "ISC",
