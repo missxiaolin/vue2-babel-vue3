@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "t": "node ./script/t.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gogocode": "^1.0.55"
+    "fs": "^0.0.1-security",
+    "gogocode": "^1.0.55",
+    "lodash": "^4.17.21",
+    "path": "^0.12.7",
+    "prettier": "^3.3.3",
+    "test": "^3.3.0"
   }
 }
