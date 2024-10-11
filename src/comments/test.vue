@@ -6,6 +6,15 @@
 
 <script>
 export default {
+  data () {
+    return {
+      visible: false,
+      height: '',
+      menuList: [],
+      selectIndex: '',
+      selectIcon: {}
+    }
+  },
   props: {
     width: {
       type: Number,
@@ -16,9 +25,9 @@ export default {
       default: "",
     },
   },
+  
   methods: {
     test() {
-      this.$emit('ceshi')
     },
     test1(v) {
       console.log(v)

@@ -1,61 +1,51 @@
-let scriptVue = `import {`;
-
-function setScriptVue(v) {
-  scriptVue = `${scriptVue} ${v} `;
-}
-
-function setImportVue(script) {
-  if (scriptVue === "import {") return;
-  script.before(`\r\n${scriptVue}\} from 'vue'`);
-}
-
-/**
- * 转换 props
- * @param {*} script
- */
-function insertDefineProps(script) {
-  const hasProps = script.has("defineProps");
-  script.replace("props:{$$$},", "const props=defineProps({$$$})");
-  if (!hasProps) {
-    setScriptVue("defineProps");
-  }
-}
-
-function insertDefineData(script) {}
-
-/**
- * 方法转换
- * @param {*} script
- */
-function insertDefineMethod(script) {
-  script
-    .find("methods:{}")
-    .replace("async $_$($$$0){$$$1}", "const $_$=async($$$0)=>{$$$1}")
-    .replace("$_$($$$0){$$$1}", "const $_$=($$$0)=>{$$$1}")
-    .replace("async $_$(){$$$}", "const $_$=async()=>{$$$}")
-    .replace("$_$(){$$$}", "const $_$=()=>{$$$}")
-    .replace("methods:{$$$}", "$$$");
-}
-
-/**
- * @param {*} script
- */
-function exposeSetup(script) {
-  script.find("export default $_$1").each((item) => {
-    // item.remove();
-  });
-}
-
 module.exports = function (ast) {
   const script =
     ast.parseOptions && ast.parseOptions.language === "vue"
       ? ast.find("<script></script>")
       : ast;
+  script.find("return {}").replace("$_$:$_$", "let $_$ = ref($_$)");
+  script
+    .find("methods:{}")
+    .replace("async $_$($$$0){$$$1}", "const $_$=async($$$0)=>{$$$1}")
+    .replace("$_$($$$0){$$$1}", "const $_$=($$$0)=>{$$$1}")
+    .replace("async $_$(){$$$}", "const $_$=async()=>{$$$}")
+    .replace("$_$(){$$$}", "const $_$=()=>{$$$}");
+  script
+    .find("filters:{}")
+    .replace("$_$:function($_$){$$$}", "const $_$=computed(($_$)=>{$$$})")
+    .replace("$_$($_$){$$$}", "const $_$=computed(($_$)=>{$$$})");
+  script
+    .find("watch:{}")
+    .replace("$_$:{handler($_$){$$$}}", "watch(()=>$_$,($_$)=>{$$$})")
+    .replace("$_$:{handler(){$$$}}", "watch(()=>$_$,()=>{$$$})")
+    .replace(
+      "'$_$':{handler($_$){$$$},deep:true}",
+      "watch(()=>$_$,($_$)=>{$$$},{deep:true})"
+    )
+    .replace("'$_$':{handler($_$){$$$}}", "watch(()=>$_$,($_$)=>{$$$})")
+    .replace("$_$($_$){$$$}", "watch(()=>$_$,($_$)=>{$$$})")
+    .replace("$_$(){$$$}", "watch(()=>$_$,()=>{$$$})");
+  script
+    .find("computed:{}")
+    .replace("$_$(){$$$}", "const $_$ = computed(()=>{$$$})");
 
-  // 1. defineProps
-  insertDefineProps(script);
-  insertDefineMethod(script);
-  exposeSetup(script);
-  setImportVue(script);
+  script
+    .replace("components:{}", "")
+    .replace("mixins:[]", "")
+    .replace("props:{$$$}", "const props =  defineProps({$$$})")
+    .replace("data(){return{$$$}}", "$$$")
+    .replace("created(){$$$}", "onBeforeMount(()=>{$$$})")
+    .replace("mounted(){$$$}", "onMounted(()=>{$$$})")
+    .replace("beforeUnmount(){$$$}", "onBeforeUnmount(()=>{$$$})")
+    .replace("unmounted(){$$$}", "onUnmounted(()=>{$$$})")
+    .replace("beforeDestroy(){$$$}", "onBeforeUnmount(()=>{$$$})")
+    .replace("destoryed(){$$$}", "onUnmounted(()=>{$$$})")
+    .replace("methods:{$$$}", "$$$")
+    .replace("filters:{$$$}", "$$$")
+    .replace("watch:{$$$}", "$$$")
+    .replace("computed:{$$$}", "$$$")
+    .replace("export default {$$$}", "$$$");
+
+  script.before(`\r\nimport { ref, computed, watch, filters } from 'vue';\n`);
   return ast;
 };

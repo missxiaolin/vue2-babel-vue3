@@ -1,51 +1,31 @@
 <template>
   <div>
-    <p>迁移：{{ name }}</p>
-    <p>Vue版本：{{ version }}</p>
-    <button v-on:click="add">Add</button>
-    <button v-on:click="remove">Remove</button>
-    <ul>
-      <slot name="center">插槽默认内容...</slot>
-      <li v-for="(item, index) in items" v-bind:key="index">{{ item }}</li>
-    </ul>
+    <template v-slot:header>
+      <div>slot: header</div>
+    </template>
   </div>
 </template>
 
-<script>
-import { version } from 'vue'
-/* 迁移指南: https://v3.cn.vuejs.org/guide/migration/watch.html */
-export default {
-  name: 'Watch on Arrays',
-  props: {
-    msg: String,
+<script setup>
+import { ref, computed, watch, filters } from 'vue'
+let visible = ref(false)
+let height = ref('')
+let menuList = ref([])
+let selectIndex = ref('')
+let selectIcon = ref({})
+const props = defineProps({
+  width: {
+    type: Number,
+    default: 446,
   },
-  data() {
-    return {
-      name: 'Watch on Arrays',
-      version: version,
-      items: [1, 2, 3, 4, 5],
-    }
+  title: {
+    type: String,
+    default: '',
   },
-  methods: {
-    randomIndex: function () {
-      return Math.floor(Math.random() * this.items.length)
-    },
-    add: function () {
-      this.items.push(this.randomIndex())
-    },
-    remove: function () {
-      this.items.splice(this.randomIndex(), 1)
-    },
-  },
-  watch: {
-    //如何知道items是数组类型？
-    items: {
-      handler(val, oldVal) {
-        console.log('items list changed')
-      },
-      deep: true,
-    },
-  },
+})
+const test = () => {}
+const test1 = (v) => {
+  console.log(v)
 }
 </script>
 

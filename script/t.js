@@ -23,7 +23,7 @@ function execRule(fileName) {
     }
 
     const sourceCode = code.toString();
-    const ast = $(sourceCode, { parseOptions: { language: 'vue' } });
+    const ast = $(sourceCode, { parseOptions: { language: "vue" } });
 
     const rules = [globalApi, globalApiTreeshaking].concat(apiRules);
 
@@ -33,31 +33,41 @@ function execRule(fileName) {
       (ast, rule) =>
         rule(ast, api, {
           filePath: inputPath,
-          rootPath: path.resolve(
-            __dirname,
-            `../src/comments`
-          ),
+          rootPath: path.resolve(__dirname, `../src/comments`),
           outFilePath: inputPath,
-          outRootPath: path.resolve(
-            __dirname,
-            `../src/vue3Comments`
-          ),
+          outRootPath: path.resolve(__dirname, `../src/vue3Comments`),
         }),
       ast
     );
     let outputCode = outAst.root().generate();
-    outputCode = outputCode.replace('<script>', '<script setup>')
-    console.log('outputCode', outputCode)
+    outputCode = outputCode.replace("<script>", "<script setup>");
+
+    prettier
+      .format(outputCode, {
+        trailingComma: "es5",
+        tabWidth: 2,
+        semi: false,
+        singleQuote: true,
+        printWidth: 80,
+        parser: "vue",
+      })
+      .then((res) => {
+        fs.writeFile(outputPath, res, function (err) {
+          if (err) {
+            throw err;
+          }
+          console.log("The file was saved!");
+        });
+      });
 
     // const prettierOutPut = prettier.format(outputCode, {
-    //     trailingComma: 'es5',
-    //     tabWidth: 2,
-    //     semi: false,
-    //     singleQuote: true,
-    //     printWidth: 80,
-    //     parser: 'vue',
+    //   trailingComma: "es5",
+    //   tabWidth: 2,
+    //   semi: false,
+    //   singleQuote: true,
+    //   printWidth: 80,
+    //   parser: "vue",
     // });
-    // console.log(prettierOutPut);
   });
 }
 
