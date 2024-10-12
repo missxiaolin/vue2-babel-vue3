@@ -59,15 +59,6 @@ function execRule(fileName) {
           console.log("The file was saved!");
         });
       });
-
-    // const prettierOutPut = prettier.format(outputCode, {
-    //   trailingComma: "es5",
-    //   tabWidth: 2,
-    //   semi: false,
-    //   singleQuote: true,
-    //   printWidth: 80,
-    //   parser: "vue",
-    // });
   });
 }
 
