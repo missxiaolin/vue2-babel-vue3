@@ -32,7 +32,7 @@ module.exports = function (ast) {
   script
     .replace("components:{}", "")
     .replace("mixins:[]", "")
-    .replace("props:{$$$}", "const props =  defineProps({$$$})")
+    .replace("props:[$$$]", "const props =  defineProps([$$$])")
     .replace("data(){return{$$$}}", "$$$")
     .replace("created(){$$$}", "onBeforeMount(()=>{$$$})")
     .replace("mounted(){$$$}", "onMounted(()=>{$$$})")

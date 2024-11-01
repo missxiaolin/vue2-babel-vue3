@@ -1,32 +1,17 @@
 <template>
-  <div>
-    <template v-slot:header>
-      <div>slot: header</div>
-    </template>
+  <div class="container" style="min-height: 100%">
+    <el-col div-lc-mark :span="24"></el-col> <el-text>Default</el-text>
+    <span>Span Element</span>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, filters } from 'vue'
-let visible = ref(false)
-let height = ref('')
-let menuList = ref([])
-let selectIndex = ref('')
-let selectIcon = ref({})
-const props = defineProps({
-  width: {
-    type: Number,
-    default: 446,
-  },
-  title: {
-    type: String,
-    default: '',
-  },
-})
-const test = () => {}
-const test1 = (v) => {
-  console.log(v)
-}
+const props = defineProps({})
+
+const request = () => {}
+onBeforeMount(() => {})
+onMounted(() => {})
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@ const fs = require("fs");
 const globalApiTreeshaking = require("../src/global-api-treeshaking");
 const globalApi = require("../src/global-api");
 
-const apiRules = [require("../src/slots-unification"), require("../src/setup")];
+const apiRules = [require("../src/slots-unification"),  require("../src/setup")];
 
 function execRule(fileName) {
   if (!fileName) {
@@ -41,6 +41,8 @@ function execRule(fileName) {
     );
     let outputCode = outAst.root().generate();
     outputCode = outputCode.replace("<script>", "<script setup>");
+    console.log(outputCode)
+    return
 
     prettier
       .format(outputCode, {
